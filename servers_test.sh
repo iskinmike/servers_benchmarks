@@ -170,6 +170,9 @@ kill $tmp_pid
 done
 echo "========================="
 
+######
+#       Обработка данных
+######
 # Теперь запустим обработку данных
 # Нужно отдельно обработать iostat.txt
 sed '/Device/d; /sda/d; /^$/d' ./$store_directory/$io_file >> ./$store_directory/$io_file.pc

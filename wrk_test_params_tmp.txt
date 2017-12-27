@@ -1,6 +1,0 @@
-threads | connections | seconds | GET/POST
-1       | 1000        | 4      | GET
-2       | 10000        | 4      | GET
-1      | 1000        | 4      | POST
-4      | 10000        | 4      | POST
-4      | 10000        | 4      | POST

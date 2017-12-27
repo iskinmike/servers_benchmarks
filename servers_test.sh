@@ -122,7 +122,7 @@ echo "========================="
 echo "Let's do some LOAD"
 # # Запускаем нагрузку
 
-wrk_path="/home/mikhail/workspace/main/wrk"
+wrk_path="./wrk"
 # server_url="http://127.0.0.1:8080/index.html"
 # server_url="http://127.0.0.1:8080/js_wilton_server/views/hi"
 server_url=$5

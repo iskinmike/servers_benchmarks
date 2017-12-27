@@ -9,20 +9,7 @@ fi
 
 # Нужно найти файлы
 
-data_files = $(find .. -name *$1.png.dat)
-
-
-# Нужно их скопировать в каталог
-
-
-
-
-
-
-
-
-
-rm *.dat.pc
+rm -f *.dat.pc
 dat_files=$(ls *.png.dat)
 
 header_line="test"
@@ -73,4 +60,6 @@ sort -u $file_names_file >> $file_names_file.pc
 
 echo $plot_line 
 
-python "unite.py" $1
+python "unite.py" $1 "$plot_line"
+
+gnuplot plot.plt

@@ -10,6 +10,9 @@ tests_dict = {}
 
 # result_string = "test"
 work_word = sys.argv[1]
+plot_line = sys.argv[2]
+
+# print "plot line:          ", plot_line
 
 names = open('./names.txt.pc')
 for line in names.readlines():
@@ -21,7 +24,7 @@ for line in tests.readlines():
 	tmp_dict = copy.deepcopy(names_dict)
 	tests_dict[line.replace('\n','')] = tmp_dict
 
-print tests_dict, "\n===================\n"
+# print tests_dict, "\n===================\n"
 
 files = open('./file_names.txt.pc')
 for line in files.readlines():
@@ -39,7 +42,7 @@ for line in files.readlines():
 		pass
 	pass
 
-print tests_dict
+# print tests_dict
 
 result_string="test"
 for elem in tests_dict[tests_dict.keys()[0]]:
@@ -55,8 +58,28 @@ for line in tests_dict:
 		pass
 	pass
 
-
+# print result_string
 mutual = open('./mutual.txt', 'w')
 mutual.write(result_string)
 
+
+
+plot = open('./plot.plt', 'w')
+
+plot_config = "set term png size 1600, 900 \n\
+set output \"%s.png\" \n\
+set boxwidth 0.9 absolute \n\
+set style fill   solid 1.00 border lt -1 \n\
+set key inside right top vertical Right noreverse noenhanced autotitles nobox \n\
+set style histogram clustered gap 1 title  offset character 0, 0, 0 \n\
+set style data histograms \n\
+set xtics border in scale 0,0 nomirror rotate by -45  offset character 0, 0, 0 autojustify \n\
+set xtics  norangelimit font \",8\" \n\
+set xtics   () \n\
+set title \"\"  \n\
+set ytics  norangelimit font \",8\" \n\
+%s \n\
+" % (work_word, plot_line)
+
+plot.write(plot_config)
 

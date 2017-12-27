@@ -19,29 +19,45 @@
 # 6. Меняем параметры
 # 7. Возвращаемся к пункту 4.
 
+usage="Usage: $0 [-test] -- server_directory server_name args store_directory server_url wrk_parameters_file\n
+\n
+-test - Флаг, который остановит выполнение скрипта после попытки запустить сервер.\n
+        \t У пользователя будет возможность проверить запустился ли сервер.\n
+        \t Если сервер не запустился - введите q для выхода из скрипта.\n
+        \t Если сервер запустился - любой ввод отличный от q продолжит выполнение скрипта.\n
+"
 
-if [[ "$1" = "--help" ]]
-then
-	echo "Usage: $0 server_directory server_name args store_directory [--test]"
-	echo ""
-	echo "  --test - Флаг, который остановит выполнение скрипта после попытки запустить сервер."
-	echo "           У пользователя будет возможность проверить запустился ли сервер."
-	echo "           Если сервер не запустился - введите q для выхода из скрипта."
-	echo "           Если сервер запустился - любой ввод отличный от q продолжит выполнение скрипта."
-	exit 0
-fi
+
+# if [[ "$1" = "--help" ]]
+# then
+# 	echo "Usage: $0 server_directory server_name args store_directory [--test]"
+# 	echo ""
+# 	echo "  --test - Флаг, который остановит выполнение скрипта после попытки запустить сервер."
+# 	echo "           У пользователя будет возможность проверить запустился ли сервер."
+# 	echo "           Если сервер не запустился - введите q для выхода из скрипта."
+# 	echo "           Если сервер запустился - любой ввод отличный от q продолжит выполнение скрипта."
+# 	exit 0
+# fi
+
+test_mode="OFF"
+while [ -n "$1" ]
+do
+case "$1" in
+-test) test_mode="ON" ;; 
+-help) echo -e $usage; exit 0 ;;
+--) shift
+break ;;
+*) echo "$1 is not an option";;
+esac
+shift
+done
 
 
 echo "========================="
 
-# Создадим директорию для теста
-# today_date=$(date -Idate)
-
-# echo $today_date
 server_name=$2
 store_directory=$4
 
-# echo $store_directory
 rm -rf $store_directory
 mkdir -p $store_directory
 
@@ -54,7 +70,7 @@ echo "$3"
 echo "$4"
 echo "$5"
 
-if [[ "$5" = "--test" ]] 
+if [[ "$test_mode" = "ON" ]] 
 then
 	echo "enter q to exit"
 	read doing #здесь мы читаем в переменную $doing со стандартного ввода
@@ -62,6 +78,13 @@ then
 	if [[ "$doing" = 'q' ]] 
 	then
 		echo "exit"
+		count=1
+		jobs -p | while read tmp_pid
+		do
+		echo "pid[$count]: $tmp_pid"
+		count=$(( $count + 1 ))
+		kill $tmp_pid
+		done
 		exit 0
 	fi
 fi
@@ -101,8 +124,9 @@ echo "Let's do some LOAD"
 
 wrk_path="/home/mikhail/workspace/main/wrk"
 # server_url="http://127.0.0.1:8080/index.html"
-server_url="http://127.0.0.1:8080/js_wilton_server/views/hi"
-wrk_test_data_file="wrk_test_params.txt"
+# server_url="http://127.0.0.1:8080/js_wilton_server/views/hi"
+server_url=$5
+wrk_test_data_file=$6  #"wrk_test_params.txt"
 
 
 cat $wrk_test_data_file | tail -n +2 | while read threads delim connections delim seconds delim  query
@@ -132,7 +156,7 @@ do
 	echo "End Run" >> ./$store_directory/$free_file
 	echo "End Run" >> ./$store_directory/$top_file
 
-	sleep 5s
+	sleep 15s
 done
 
 

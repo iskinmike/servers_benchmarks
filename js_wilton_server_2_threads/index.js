@@ -8,7 +8,7 @@ define([
 ], function(http, Logger, Server, misc, thread) {
     "use strict";
 
-    var logger = new Logger("js_wilton_server.main");
+    var logger = new Logger("js_wilton_server_2_threads.main");
     // var misc = new misc();
 
     return {
@@ -18,8 +18,8 @@ define([
                 numberOfThreads: 2,
                 tcpPort: 8080,
                 views: [
-                    "js_wilton_server/views/hi",
-                    "js_wilton_server/views/bye"
+                    "js_wilton_server_2_threads/views/hi",
+                    "js_wilton_server_2_threads/views/bye"
                 ]
             });
 
